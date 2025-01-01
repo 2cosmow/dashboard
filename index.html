@@ -124,13 +124,69 @@
         </div>
     </div>
 
+    <div id="countdownView" style="display: none">
+        <div class="card">
+            <h2>Countdown all'Esame</h2>
+            <div id="countdown" style="font-size: 24px; margin: 20px;"></div>
+            <button class="back-button" onclick="showMain()">Torna alla Dashboard</button>
+        </div>
+    </div>
+
+    <div id="progressView" style="display: none">
+        <div class="card">
+            <h2>Grafico dei Miglioramenti</h2>
+            <div id="progressChart" style="height: 400px;"></div>
+            <button class="back-button" onclick="showMain()">Torna alla Dashboard</button>
+        </div>
+    </div>
+
+    <div id="weeklyView" style="display: none">
+        <div class="card">
+            <h2>Riepilogo Settimanale</h2>
+            <table id="weeklyTable">
+                <thead>
+                    <tr>
+                        <th>Settimana</th>
+                        <th>Totale Punteggio</th>
+                        <th>Media Punteggio</th>
+                        <th>Attività Frequente</th>
+                        <th>Trend</th>
+                    </tr>
+                </thead>
+                <tbody id="weeklyTableBody"></tbody>
+            </table>
+            <button class="back-button" onclick="showMain()">Torna alla Dashboard</button>
+        </div>
+    </div>
+
+    <div id="notesView" style="display: none">
+        <div class="card">
+            <h2>Note Personali</h2>
+            <textarea id="noteInput" style="width: 100%; height: 200px; margin: 10px 0; padding: 10px;"></textarea>
+            <button class="button" onclick="saveNote()">Aggiungi Nota</button>
+            <div id="notesList" style="margin-top: 20px; text-align: left;"></div>
+            <button class="back-button" onclick="showMain()">Torna alla Dashboard</button>
+        </div>
+    </div>
+
+    <div id="dateModifyView" style="display: none">
+        <div class="card">
+            <h2>Modifica Data del Countdown</h2>
+            <input type="date" id="newExamDate" class="date-input">
+            <button class="button" onclick="saveNewDate()">Salva</button>
+            <button class="back-button" onclick="showMain()">Torna alla Dashboard</button>
+        </div>
+    </div>
+
     <script>
         let routineData = {};
         let examDate = new Date('2024-02-15');
+        let notes = [];
 
+        // View Functions
         function showMain() {
             document.getElementById('mainView').style.display = 'grid';
-            ['routineView'].forEach(view => {
+            ['routineView', 'countdownView', 'progressView', 'weeklyView', 'notesView', 'dateModifyView'].forEach(view => {
                 document.getElementById(view).style.display = 'none';
             });
         }
@@ -140,34 +196,179 @@
             document.getElementById('routineView').style.display = 'block';
         }
 
+        function showCountdown() {
+            document.getElementById('mainView').style.display = 'none';
+            document.getElementById('countdownView').style.display = 'block';
+            updateCountdown();
+        }
+
+        function showProgress() {
+            document.getElementById('mainView').style.display = 'none';
+            document.getElementById('progressView').style.display = 'block';
+            updateProgressChart();
+        }
+
+        function showWeekly() {
+            document.getElementById('mainView').style.display = 'none';
+            document.getElementById('weeklyView').style.display = 'block';
+            updateWeeklySummary();
+        }
+
+        function showNotes() {
+            document.getElementById('mainView').style.display = 'none';
+            document.getElementById('notesView').style.display = 'block';
+            displayNotes();
+        }
+
+        function showDateModify() {
+            document.getElementById('mainView').style.display = 'none';
+            document.getElementById('dateModifyView').style.display = 'block';
+        }
+
+        // Functionality
         function saveRoutine() {
             const today = new Date().toISOString().split('T')[0];
             let dailyScore = 0;
+            let activities = [];
             
             document.querySelectorAll('.checkbox-container input:checked').forEach(checkbox => {
                 dailyScore += parseFloat(checkbox.value);
+                activities.push(checkbox.id);
             });
 
             if (!routineData[today]) {
                 routineData[today] = [];
             }
-            routineData[today].push(dailyScore);
+            routineData[today].push({
+                score: dailyScore,
+                activities: activities
+            });
 
-            // Update local storage
             localStorage.setItem('routineData', JSON.stringify(routineData));
-            
             alert('Attività salvate con successo!');
             updateWeeklySummary();
-            updateProgress();
+            updateProgressChart();
+        }
+
+        function updateCountdown() {
+            const now = new Date();
+            const diff = examDate - now;
+            
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            
+            document.getElementById('countdown').innerHTML = 
+                days + ' giorni, ' + hours + ' ore, ' + 
+                minutes + ' minuti, ' + seconds + ' secondi';
+            
+            setTimeout(updateCountdown, 1000);
+        }
+
+        function updateProgressChart() {
+            const dates = Object.keys(routineData).sort();
+            const scores = dates.map(date => {
+                return routineData[date].reduce((sum, entry) => sum + entry.score, 0);
+            });
+
+            const trace = {
+                x: dates,
+                y: scores,
+                type: 'bar',
+                marker: {
+                    color: '#4169e1'
+                }
+            };
+
+            const layout = {
+                title: 'Progresso Giornaliero',
+                xaxis: {title: 'Data'},
+                yaxis: {title: 'Punteggio Totale', range: [0, 9]}
+            };
+
+            Plotly.newPlot('progressChart', [trace], layout);
+        }
+
+        function updateWeeklySummary() {
+            const weeklyData = {};
+            Object.entries(routineData).forEach(([date, entries]) => {
+                const week = getWeekNumber(new Date(date));
+                if (!weeklyData[week]) {
+                    weeklyData[week] = {
+                        totalScore: 0,
+                        days: 0,
+                        activities: {}
+                    };
+                }
+                
+                entries.forEach(entry => {
+                    weeklyData[week].totalScore += entry.score;
+                    entry.activities.forEach(activity => {
+                        weeklyData[week].activities[activity] = 
+                            (weeklyData[week].activities[activity] || 0) + 1;
+                    });
+                });
+                weeklyData[week].days++;
+            });
+
+            const tbody = document.getElementById('weeklyTableBody');
+            tbody.innerHTML = '';
+            
+            Object.entries(weeklyData).forEach(([week, data]) => {
+                const row = tbody.insertRow();
+                row.insertCell(0).textContent = 'Settimana ' + week;
+                row.insertCell(1).textContent = data.totalScore.toFixed(2);
+                row.insertCell(2).textContent = (data.totalScore / data.days).toFixed(2);
+                
+                const mostFrequent = Object.entries(data.activities)
+                    .sort((a, b) => b[1] - a[1])[0];
+                row.insertCell(3).textContent = mostFrequent ? mostFrequent[0] : 'N/A';
+                row.insertCell(4).textContent = 'N/A';
+            });
+        }
+
+        function saveNote() {
+            const noteText = document.getElementById('noteInput').value;
+            if (noteText.trim()) {
+                notes.push({
+                    text: noteText,
+                    date: new Date().toISOString()
+                });
+                localStorage.setItem('notes', JSON.stringify(notes));
+                document.getElementById('noteInput').value = '';
+                displayNotes();
+            }
+        }
+
+        function displayNotes() {
+            const notesList = document.getElementById('notesList');
+            notesList.innerHTML = notes
+                .sort((a, b) => new Date(b.date) - new Date(a.date))
+                .map(note => `<div style="margin: 10px 0; padding: 10px; border: 1px solid #e2e8f0;">
+                    <div style="font-size: 0.8em; color: #718096;">
+                        ${new Date(note.date).toLocaleString()}
+                    </div>
+                    <div style="margin-top: 5px;">${note.text}</div>
+                </div>`)
+                .join('');
+        }
+
+        function saveNewDate() {
+            const newDate = document.getElementById('newExamDate').value;
+            if (newDate) {
+                examDate = new Date(newDate);
+                localStorage.setItem('examDate', newDate);
+                alert('Data aggiornata con successo!');
+                showMain();
+            }
+        }
+
+        function getWeekNumber(d) {
+            d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+            d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay()||7));
+            const yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
+            return Math.ceil(( ( (d - yearStart) / 86400000) + 1)/7);
         }
 
         // Load saved data on page load
-        window.onload = function() {
-            const saved = localStorage.getItem('routineData');
-            if (saved) {
-                routineData = JSON.parse(saved);
-            }
-        };
-    </script>
-</body>
-</html>
