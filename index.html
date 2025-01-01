@@ -3,77 +3,123 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Step by Step</title>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <style>
-        body {
-            margin: 0;
-            padding: 20px;
-            font-family: -apple-system, system-ui, BlinkMacSystemFont;
-            background-color: #f0f4f8;
-        }
+    body {
+        margin: 0;
+        padding: 10px;
+        font-family: -apple-system, system-ui, BlinkMacSystemFont;
+        background-color: #f0f4f8;
+    }
+    .grid-container {
+        display: grid;
+        grid-template-columns: 1fr;  /* Single column on mobile */
+        gap: 15px;
+        max-width: 100%;
+        margin: 0 auto;
+        padding: 10px;
+    }
+    .card {
+        background: #fff;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        text-align: center;
+        width: auto;
+        margin: 0;
+    }
+    .button {
+        background: #4169e1;
+        color: white;
+        padding: 12px 24px;  /* Larger touch target */
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+        width: 80%;         /* Wider buttons on mobile */
+        max-width: 200px;
+        margin: 10px auto;
+        font-size: 16px;    /* Larger font for better readability */
+    }
+    .back-button {
+        background: #718096;
+        color: white;
+        padding: 12px 24px;  /* Larger touch target */
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+        width: 80%;         /* Wider buttons on mobile */
+        max-width: 200px;
+        margin: 10px auto;
+        font-size: 16px;
+    }
+    .checkbox-container {
+        text-align: left;
+        margin: 15px;
+        font-size: 16px;    /* Larger font for better readability */
+    }
+    .checkbox-container div {
+        margin: 15px 0;     /* More space between checkboxes */
+    }
+    h1 {
+        text-align: center;
+        color: #2d3748;
+        margin: 15px 0;
+        font-size: 24px;    /* Adjusted for mobile */
+    }
+    h2 {
+        font-size: 20px;    /* Adjusted for mobile */
+    }
+    .date-input {
+        padding: 12px;      /* Larger touch target */
+        margin: 10px 0;
+        border-radius: 8px;
+        border: 1px solid #cbd5e0;
+        width: 80%;
+        max-width: 300px;
+        font-size: 16px;
+    }
+    table {
+        width: 100%;
+        font-size: 14px;    /* Smaller font for tables on mobile */
+        overflow-x: auto;   /* Horizontal scroll for wide tables */
+        display: block;
+    }
+    #progressChart {
+        height: 300px !important;  /* Smaller height on mobile */
+    }
+    #countdown {
+        font-size: 20px !important;  /* Adjusted countdown size */
+        word-wrap: break-word;
+    }
+    textarea {
+        font-size: 16px !important;  /* Better textarea input on mobile */
+    }
+
+    /* Media query per tablet e desktop */
+    @media screen and (min-width: 768px) {
         .grid-container {
-            display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
+            padding: 20px;
         }
         .card {
-            background: #fff;
             padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            text-align: center;
         }
-        .button {
-            background: #4169e1;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 5px;
-            border: none;
-            cursor: pointer;
-            width: 100px;
-            margin: 10px auto;
-        }
-        .back-button {
-            background: #718096;
-            color: white;
-            padding: 8px 16px;
-            border-radius: 5px;
-            border: none;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-        .checkbox-container {
-            text-align: left;
-            margin: 15px;
+        body {
+            padding: 20px;
         }
         h1 {
-            text-align: center;
-            color: #2d3748;
-            margin-bottom: 30px;
+            font-size: 32px;
         }
-        .date-input {
-            padding: 8px;
-            margin: 10px 0;
-            border-radius: 5px;
-            border: 1px solid #cbd5e0;
+        h2 {
+            font-size: 24px;
         }
         table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
+            font-size: 16px;
         }
-        th, td {
-            padding: 12px;
-            border: 1px solid #e2e8f0;
-            text-align: center;
-        }
-        th {
-            background-color: #f8fafc;
-        }
-    </style>
+    }
+</style>
 </head>
 <body>
     <h1>Step by Step</h1>
