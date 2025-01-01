@@ -321,13 +321,12 @@
         }
 
 function updateProgressChart() {
-    // Ottiene la data corrente in formato italiano (GMT+1)
+    // Funzioni helper per le date
     const getCurrentItalianDate = () => {
         const now = new Date();
         return new Date(now.getTime() + (1 * 60 * 60 * 1000)).toISOString().split('T')[0];
     };
 
-    // Genera un array di 30 giorni fino alla data corrente
     const generateLast30Days = () => {
         let dates = [];
         for (let i = 29; i >= 0; i--) {
@@ -338,41 +337,82 @@ function updateProgressChart() {
         return dates;
     };
 
-    // Ottiene i punteggi per ogni giorno, restituisce 0 se non ci sono attività
-    const getScoreForDate = (date) => {
-        if (!routineData[date] || routineData[date].length === 0) {
-            return 0;
-        }
-        return routineData[date].reduce((sum, entry) => sum + entry.score, 0);
+    // Calcola il punteggio e determina il colore
+    const getScoreAndColor = (date) => {
+        const score = !routineData[date] ? 0 : 
+            routineData[date].reduce((sum, entry) => sum + entry.score, 0);
+        
+        // Scala di colori basata sul punteggio
+        if (score === 0) return { score, color: '#e2e8f0' };  // Grigio chiaro per 0
+        if (score < 3) return { score, color: '#60a5fa' };    // Blu chiaro per basso
+        if (score < 6) return { score, color: '#3b82f6' };    // Blu medio per medio
+        return { score, color: '#1d4ed8' };                   // Blu scuro per alto
     };
 
     const dates = generateLast30Days();
-    const scores = dates.map(date => getScoreForDate(date));
-
-    // Label dei giorni come t0, t1, ecc.
-    const timeLabels = dates.map((_, index) => `t${index}`);
-
-    const trace = {
-        x: timeLabels,
-        y: scores,
-        type: 'bar',
-        marker: {
-            color: '#4169e1'
-        }
+    const scoreData = dates.map(date => getScoreAndColor(date));
+    
+    // Calcola la media mobile a 7 giorni per la linea di trend
+    const movingAverage = scores => {
+        return scores.map((_, idx, arr) => {
+            const start = Math.max(0, idx - 6);
+            const values = arr.slice(start, idx + 1).map(v => v.score);
+            const avg = values.reduce((a, b) => a + b, 0) / values.length;
+            return avg;
+        });
     };
 
+    const traces = [
+        // Barre
+        {
+            x: dates.map((_, i) => `t${i}`),
+            y: scoreData.map(d => d.score),
+            type: 'bar',
+            name: 'Punteggio',
+            marker: {
+                color: scoreData.map(d => d.color)
+            },
+            hovertemplate: `Data: %{customdata}<br>Punteggio: %{y}<extra></extra>`,
+            customdata: dates
+        },
+        // Linea di trend
+        {
+            x: dates.map((_, i) => `t${i}`),
+            y: movingAverage(scoreData),
+            type: 'scatter',
+            mode: 'lines',
+            name: 'Media 7 giorni',
+            line: {
+                color: '#475569',
+                width: 2,
+                dash: 'dot'
+            },
+            hovertemplate: 'Media: %{y:.1f}<extra></extra>'
+        }
+    ];
+
     const layout = {
-        title: 'Progresso Giornaliero',
+        title: {
+            text: 'Progresso Giornaliero',
+            font: {
+                size: 20
+            }
+        },
         xaxis: {
             title: 'Tempo (giorni)',
             showgrid: false,
-            tickangle: -45
+            tickangle: -45,
+            tickfont: {
+                size: 10
+            }
         },
         yaxis: {
             title: 'Punteggio Totale', 
             range: [0, 9],
             showgrid: true,
-            gridcolor: '#f0f0f0'
+            gridcolor: '#f0f0f0',
+            zeroline: true,
+            zerolinecolor: '#cbd5e0'
         },
         paper_bgcolor: 'rgba(0,0,0,0)',
         plot_bgcolor: 'rgba(0,0,0,0)',
@@ -381,17 +421,26 @@ function updateProgressChart() {
             l: 50,
             r: 20,
             t: 40,
-            b: 80  // Aumentato per i label ruotati
-        }
+            b: 80
+        },
+        showlegend: true,
+        legend: {
+            orientation: 'h',
+            yanchor: 'bottom',
+            y: 1.02,
+            xanchor: 'right',
+            x: 1
+        },
+        hovermode: 'x unified'
     };
 
     const config = {
         displayModeBar: false,
         responsive: true,
-        staticPlot: true
+        staticPlot: false  // Permettiamo l'interazione per i tooltip
     };
 
-    Plotly.newPlot('progressChart', [trace], layout, config);
+    Plotly.newPlot('progressChart', traces, layout, config);
 }
         function updateWeeklySummary() {
             const weeklyData = {};
