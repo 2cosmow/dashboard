@@ -321,13 +321,39 @@
         }
 
 function updateProgressChart() {
-    const dates = Object.keys(routineData).sort();
-    const scores = dates.map(date => {
+    // Ottiene la data corrente in formato italiano (GMT+1)
+    const getCurrentItalianDate = () => {
+        const now = new Date();
+        return new Date(now.getTime() + (1 * 60 * 60 * 1000)).toISOString().split('T')[0];
+    };
+
+    // Genera un array di 30 giorni fino alla data corrente
+    const generateLast30Days = () => {
+        let dates = [];
+        for (let i = 29; i >= 0; i--) {
+            const date = new Date();
+            date.setDate(date.getDate() - i);
+            dates.push(date.toISOString().split('T')[0]);
+        }
+        return dates;
+    };
+
+    // Ottiene i punteggi per ogni giorno, restituisce 0 se non ci sono attività
+    const getScoreForDate = (date) => {
+        if (!routineData[date] || routineData[date].length === 0) {
+            return 0;
+        }
         return routineData[date].reduce((sum, entry) => sum + entry.score, 0);
-    });
+    };
+
+    const dates = generateLast30Days();
+    const scores = dates.map(date => getScoreForDate(date));
+
+    // Label dei giorni come t0, t1, ecc.
+    const timeLabels = dates.map((_, index) => `t${index}`);
 
     const trace = {
-        x: dates,
+        x: timeLabels,
         y: scores,
         type: 'bar',
         marker: {
@@ -338,8 +364,9 @@ function updateProgressChart() {
     const layout = {
         title: 'Progresso Giornaliero',
         xaxis: {
-            title: 'Data',
-            showgrid: false
+            title: 'Tempo (giorni)',
+            showgrid: false,
+            tickangle: -45
         },
         yaxis: {
             title: 'Punteggio Totale', 
@@ -349,24 +376,23 @@ function updateProgressChart() {
         },
         paper_bgcolor: 'rgba(0,0,0,0)',
         plot_bgcolor: 'rgba(0,0,0,0)',
-        displayModeBar: false,  // Rimuove la toolbar
-        margin: {    // Aggiusta i margini
+        displayModeBar: false,
+        margin: {
             l: 50,
             r: 20,
             t: 40,
-            b: 50
+            b: 80  // Aumentato per i label ruotati
         }
     };
 
     const config = {
-        displayModeBar: false,  // Rimuove la toolbar
+        displayModeBar: false,
         responsive: true,
-        staticPlot: true       // Disabilita tutte le interazioni
+        staticPlot: true
     };
 
     Plotly.newPlot('progressChart', [trace], layout, config);
 }
-
         function updateWeeklySummary() {
             const weeklyData = {};
             Object.entries(routineData).forEach(([date, entries]) => {
