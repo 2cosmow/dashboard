@@ -110,19 +110,27 @@
         </div>
     </div>
 
-    <div id="routineView" style="display: none">
-        <div class="card">
-            <h2>Routine Giornaliera</h2>
-            <div class="checkbox-container">
-                <input type="checkbox" id="task1" value="2.5"> Lettura Approfondita (2.5)<br>
-                <input type="checkbox" id="task2" value="2.0"> Schema Argomenti (2.0)<br>
-                <input type="checkbox" id="task3" value="1.5"> Leggere Appunti (1.5)<br>
-                <input type="checkbox" id="task4" value="1.0"> Ripasso Veloce (1.0)<br>
-            </div>
-            <button class="button" onclick="saveRoutine()">Salva</button>
-            <button class="back-button" onclick="showMain()">Torna alla Dashboard</button>
+<div id="routineView" style="display: none">
+    <div class="card">
+        <h2>Routine Giornaliera</h2>
+        <div class="checkbox-container">
+            <label for="task1">
+                <input type="checkbox" id="task1" name="task1" value="2.5"> Lettura Approfondita (2.5)
+            </label><br>
+            <label for="task2">
+                <input type="checkbox" id="task2" name="task2" value="2.0"> Schema Argomenti (2.0)
+            </label><br>
+            <label for="task3">
+                <input type="checkbox" id="task3" name="task3" value="1.5"> Leggere Appunti (1.5)
+            </label><br>
+            <label for="task4">
+                <input type="checkbox" id="task4" name="task4" value="1.0"> Ripasso Veloce (1.0)
+            </label><br>
         </div>
+        <button type="button" class="button" onclick="saveRoutine()">Salva</button>
+        <button type="button" class="back-button" onclick="showMain()">Torna alla Dashboard</button>
     </div>
+</div>
 
     <div id="countdownView" style="display: none">
         <div class="card">
@@ -162,7 +170,7 @@
     <div id="notesView" style="display: none">
         <div class="card">
             <h2>Note Personali</h2>
-            <textarea id="noteInput" style="width: 100%; height: 200px; margin: 10px 0; padding: 10px;"></textarea>
+            <textarea id="noteInput" name="noteInput" style="width: 100%; height: 200px; margin: 10px 0; padding: 10px;"></textarea>
             <button class="button" onclick="saveNote()">Aggiungi Nota</button>
             <div id="notesList" style="margin-top: 20px; text-align: left;"></div>
             <button class="back-button" onclick="showMain()">Torna alla Dashboard</button>
@@ -172,7 +180,7 @@
     <div id="dateModifyView" style="display: none">
         <div class="card">
             <h2>Modifica Data del Countdown</h2>
-            <input type="date" id="newExamDate" class="date-input">
+            <input type="date" id="newExamDate" name="newExamDate" class="date-input">
             <button class="button" onclick="saveNewDate()">Salva</button>
             <button class="back-button" onclick="showMain()">Torna alla Dashboard</button>
         </div>
@@ -373,21 +381,23 @@
 
         // Load saved data on page load
         window.onload = function() {
-            const savedRoutine = localStorage.getItem('routineData');
-            if (savedRoutine) {
-                routineData = JSON.parse(savedRoutine);
-            }
+    const savedRoutine = localStorage.getItem('routineData');
+    if (savedRoutine) {
+        routineData = JSON.parse(savedRoutine);
+    }
 
-            const savedNotes = localStorage.getItem('notes');
-            if (savedNotes) {
-                notes = JSON.parse(savedNotes);
-            }
+    const savedNotes = localStorage.getItem('notes');
+    if (savedNotes) {
+        notes = JSON.parse(savedNotes);
+    }
 
-            const savedDate = localStorage.getItem('examDate');
-            if (savedDate) {
-                examDate = new Date(savedDate);
-            }
-        };
+    const savedDate = localStorage.getItem('examDate');
+    if (savedDate) {
+        examDate = new Date(savedDate);
+    }
+
+    showMain();
+};
     </script>
 </body>
 </html>
