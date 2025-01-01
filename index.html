@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: -apple-system, system-ui, BlinkMacSystemFont;
+        }
+        .dashboard {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .chart-container {
+            width: 100%;
+            height: 400px;
+            margin: 20px 0;
+        }
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .chart-container {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <h1>My Dashboard</h1>
+        <div id="chart" class="chart-container"></div>
+    </div>
+    <script>
+        // Your dashboard JavaScript code will go here
+        fetch('data.json')
+            .then(response => response.json())
+            .then(data => {
+                // Create your plots here
+                Plotly.newPlot('chart', data.traces, data.layout);
+            });
+    </script>
+</body>
+</html>
