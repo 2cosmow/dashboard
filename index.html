@@ -372,3 +372,19 @@
         }
 
         // Load saved data on page load
+        window.onload = function() {
+            const savedRoutine = localStorage.getItem('routineData');
+            if (savedRoutine) {
+                routineData = JSON.parse(savedRoutine);
+            }
+
+            const savedNotes = localStorage.getItem('notes');
+            if (savedNotes) {
+                notes = JSON.parse(savedNotes);
+            }
+
+            const savedDate = localStorage.getItem('examDate');
+            if (savedDate) {
+                examDate = new Date(savedDate);
+            }
+        };
