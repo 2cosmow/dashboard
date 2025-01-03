@@ -337,11 +337,22 @@
 
         // View Functions
         function showMain() {
-            document.getElementById('mainView').style.display = 'grid';
-            ['routineView', 'countdownView', 'progressView', 'weeklyView', 'notesView', 'dateModifyView'].forEach(view => {
-                document.getElementById(view).style.display = 'none';
-            });
+    // Ensure mainView is displayed as a grid
+    const mainView = document.getElementById('mainView');
+    if (mainView) {
+        mainView.style.display = 'grid';
+    }
+
+    // Hide all other views
+    const views = ['routineView', 'countdownView', 'progressView', 'weeklyView', 'notesView', 'dateModifyView'];
+    views.forEach(viewId => {
+        const viewElement = document.getElementById(viewId);
+        if (viewElement) {
+            viewElement.style.display = 'none';
         }
+    });
+}
+
 
         function showRoutine() {
             document.getElementById('mainView').style.display = 'none';
