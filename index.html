@@ -331,9 +331,17 @@
     </div>
 
     <script>
+        
         let routineData = {};
         let examDate = new Date('2024-02-15');
         let notes = [];
+        function switchView(viewId) {
+    const views = ['mainView', 'routineView', 'countdownView', 'progressView', 'weeklyView', 'notesView', 'dateModifyView'];
+    views.forEach(id => {
+        document.getElementById(id).style.display = id === viewId ? 'grid' : 'none';
+    });
+}
+
 
      function showMain() {
     // Display the main dashboard
@@ -376,38 +384,36 @@
     updateProgressChart();
 }
 
+function showMain() {
+    switchView('mainView');
+}
+
 function showRoutine() {
-    document.getElementById('mainView').style.display = 'none';
-    document.getElementById('routineView').style.display = 'block';
+    switchView('routineView');
 }
 
 function showCountdown() {
-    document.getElementById('mainView').style.display = 'none';
-    document.getElementById('countdownView').style.display = 'block';
+    switchView('countdownView');
     updateCountdown();
 }
 
 function showProgress() {
-    document.getElementById('mainView').style.display = 'none';
-    document.getElementById('progressView').style.display = 'block';
+    switchView('progressView');
     updateProgressChart();
 }
 
 function showWeekly() {
-    document.getElementById('mainView').style.display = 'none';
-    document.getElementById('weeklyView').style.display = 'block';
+    switchView('weeklyView');
     updateWeeklySummary();
 }
 
 function showNotes() {
-    document.getElementById('mainView').style.display = 'none';
-    document.getElementById('notesView').style.display = 'block';
+    switchView('notesView');
     displayNotes();
 }
 
 function showDateModify() {
-    document.getElementById('mainView').style.display = 'none';
-    document.getElementById('dateModifyView').style.display = 'block';
+    switchView('dateModifyView');
 }
 
         // Functionality
