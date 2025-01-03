@@ -279,7 +279,6 @@
     <!-- Modify date content -->
 </div>
 
-<div id="routineView" style="display: none">
     <div class="card">
         <h2>Routine Giornaliera</h2>
        <div class="checkbox-container">
@@ -362,57 +361,16 @@
         let routineData = {};
         let examDate = new Date('2024-02-15');
         let notes = [];
-        function switchView(viewId) {
-  const views = ['mainView', 'routineView', 'countdownView', 'progressView', 'weeklyView', 'notesView', 'dateModifyView'];
+        
+       function switchView(viewId) {
+    const views = ['mainView', 'routineView', 'countdownView', 'progressView', 'weeklyView', 'notesView', 'dateModifyView'];
     views.forEach(id => {
         const view = document.getElementById(id);
         if (view) {
-            view.style.display = id === viewId ? 'grid' : 'none';
+            view.style.display = id === viewId ? (id === 'mainView' ? 'grid' : 'block') : 'none';
         }
     });
 }
-
-
-
-     function showMain() {
-    // Display the main dashboard
-    document.getElementById('mainView').style.display = 'grid';
-
-    // Hide all other views
-    const views = ['routineView', 'countdownView', 'progressView', 'weeklyView', 'notesView', 'dateModifyView'];
-    views.forEach(view => {
-        const element = document.getElementById(view);
-        if (element) {
-            element.style.display = 'none';
-        }
-    });
-}
-
-
-
-       function saveRoutine() {
-    const today = new Date().toISOString().split('T')[0];
-    let dailyScore = 0;
-    let activities = [];
-
-    document.querySelectorAll('.checkbox-container input:checked').forEach(checkbox => {
-        dailyScore += parseFloat(checkbox.value);
-        activities.push(checkbox.id);
-    });
-
-    if (!routineData[today]) {
-        routineData[today] = [];
-    }
-    routineData[today].push({
-        score: dailyScore,
-        activities: activities
-    });
-
-    // Save data to localStorage
-    localStorage.setItem('routineData', JSON.stringify(routineData));
-    alert('Attività salvate con successo!');
-    updateWeeklySummary();
-    updateProgressChart();
 }
 
 function showMain() {
