@@ -217,41 +217,53 @@
 </head>
 <body>
     
-   <div class="header">
-        <h1>Step by Step</h1>
+  <div class="header">
+    <h1>Step by Step</h1>
+</div>
+<div id="mainView" class="grid-container">
+    <!-- Countdown Section -->
+    <div class="card">
+        <h2>Countdown</h2>
+        <p>Quanto manca</p>
+        <button class="button" onclick="showCountdown()">Vai</button>
     </div>
-    <div id="mainView" class="grid-container">
-        <div class="card">
-            <h2>Countdown all'Esame</h2>
-            <p>Scopri quanto tempo manca all'esame.</p>
-            <button class="button" onclick="showCountdown()">Vai</button>
-        </div>
-        <div class="card">
-            <h2>Grafico dei Miglioramenti</h2>
-            <p>Visualizza i tuoi progressi.</p>
-            <button class="button" onclick="showProgress()">Vai</button>
-        </div>
-        <div class="card">
-            <h2>Routine Giornaliera</h2>
-            <p>Organizza e monitora la tua giornata.</p>
-            <button class="button" onclick="showRoutine()">Vai</button>
-        </div>
-        <div class="card">
-            <h2>Note Personali</h2>
-            <p>Scrivi e visualizza le tue note personali.</p>
-            <button class="button" onclick="showNotes()">Vai</button>
-        </div>
-        <div class="card">
-            <h2>Riepilogo Settimanale</h2>
-            <p>Controlla i tuoi progressi settimanali.</p>
-            <button class="button" onclick="showWeekly()">Vai</button>
-        </div>
-        <div class="card">
-            <h2>Modifica Data Countdown</h2>
-            <p>Imposta una nuova data per il countdown.</p>
-            <button class="button" onclick="showDateModify()">Vai</button>
-        </div>
+    
+    <!-- Progress Chart Section -->
+    <div class="card">
+        <h2>Grafico</h2>
+        <p>Sali le scale</p>
+        <button class="button" onclick="showProgress()">Vai</button>
     </div>
+    
+    <!-- Daily Routine Section -->
+    <div class="card">
+        <h2>Daily routine</h2>
+        <p>Organizza e monitora</p>
+        <button class="button" onclick="showRoutine()">Vai</button>
+    </div>
+    
+    <!-- Personal Notes Section -->
+    <div class="card">
+        <h2>Note Personali</h2>
+        <p>nota bene</p>
+        <button class="button" onclick="showNotes()">Vai</button>
+    </div>
+    
+    <!-- Weekly Summary Section -->
+    <div class="card">
+        <h2>Weekly</h2>
+        <p>Visione d'insieme</p>
+        <button class="button" onclick="showWeekly()">Vai</button>
+    </div>
+    
+    <!-- Modify Countdown Date Section -->
+    <div class="card">
+        <h2>Cambia data</h2>
+        <p>Quando?</p>
+        <button class="button" onclick="showDateModify()">Vai</button>
+    </div>
+</div>
+
 
 <div id="routineView" style="display: none">
     <div class="card">
