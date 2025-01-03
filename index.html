@@ -335,23 +335,20 @@
         let examDate = new Date('2024-02-15');
         let notes = [];
 
-        // View Functions
-        function showMain() {
-    // Ensure mainView is displayed as a grid
-    const mainView = document.getElementById('mainView');
-    if (mainView) {
-        mainView.style.display = 'grid';
-    }
+     function showMain() {
+    // Display the main dashboard
+    document.getElementById('mainView').style.display = 'grid';
 
     // Hide all other views
     const views = ['routineView', 'countdownView', 'progressView', 'weeklyView', 'notesView', 'dateModifyView'];
-    views.forEach(viewId => {
-        const viewElement = document.getElementById(viewId);
-        if (viewElement) {
-            viewElement.style.display = 'none';
+    views.forEach(view => {
+        const element = document.getElementById(view);
+        if (element) {
+            element.style.display = 'none';
         }
     });
 }
+
 
 
        function saveRoutine() {
@@ -379,35 +376,39 @@
     updateProgressChart();
 }
 
+function showRoutine() {
+    document.getElementById('mainView').style.display = 'none';
+    document.getElementById('routineView').style.display = 'block';
+}
 
-        function showCountdown() {
-            document.getElementById('mainView').style.display = 'none';
-            document.getElementById('countdownView').style.display = 'block';
-            updateCountdown();
-        }
+function showCountdown() {
+    document.getElementById('mainView').style.display = 'none';
+    document.getElementById('countdownView').style.display = 'block';
+    updateCountdown();
+}
 
-        function showProgress() {
-            document.getElementById('mainView').style.display = 'none';
-            document.getElementById('progressView').style.display = 'block';
-            updateProgressChart();
-        }
+function showProgress() {
+    document.getElementById('mainView').style.display = 'none';
+    document.getElementById('progressView').style.display = 'block';
+    updateProgressChart();
+}
 
-        function showWeekly() {
-            document.getElementById('mainView').style.display = 'none';
-            document.getElementById('weeklyView').style.display = 'block';
-            updateWeeklySummary();
-        }
+function showWeekly() {
+    document.getElementById('mainView').style.display = 'none';
+    document.getElementById('weeklyView').style.display = 'block';
+    updateWeeklySummary();
+}
 
-        function showNotes() {
-            document.getElementById('mainView').style.display = 'none';
-            document.getElementById('notesView').style.display = 'block';
-            displayNotes();
-        }
+function showNotes() {
+    document.getElementById('mainView').style.display = 'none';
+    document.getElementById('notesView').style.display = 'block';
+    displayNotes();
+}
 
-        function showDateModify() {
-            document.getElementById('mainView').style.display = 'none';
-            document.getElementById('dateModifyView').style.display = 'block';
-        }
+function showDateModify() {
+    document.getElementById('mainView').style.display = 'none';
+    document.getElementById('dateModifyView').style.display = 'block';
+}
 
         // Functionality
         function saveRoutine() {
