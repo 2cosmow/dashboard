@@ -90,11 +90,15 @@
     margin-bottom: 2rem;
 }
 
-/* Card con bordo colorato */
 .card {
-    border-top: 4px solid var(--primary-color);
     background: var(--card-bg);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    padding: 15px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    margin: 0 auto;
+    width: 100%;
+    max-width: 100%;
+    text-align: center;
 }
 
 .card:hover {
@@ -131,7 +135,72 @@
 
 .back-button:hover {
     background: #3d84d5;
-}       
+}     
+/* Stili specifici per mobile */
+@media (max-width: 768px) {
+    .card {
+        padding: 15px 10px;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+
+    h2 {
+        font-size: 20px;
+    }
+
+    .button {
+        width: 80%;
+        max-width: 250px;
+        margin: 10px auto;
+    }
+
+    .checkbox-container {
+        padding: 10px;
+        text-align: left;
+    }
+
+    #countdown {
+        font-size: 18px !important;
+        padding: 10px;
+        word-wrap: break-word;
+    }
+
+    table {
+        display: block;
+        overflow-x: auto;
+        font-size: 14px;
+    }
+
+    th, td {
+        padding: 8px;
+        min-width: 100px;
+    }
+
+    #progressChart {
+        height: 300px !important;
+        width: 100% !important;
+    }
+
+    textarea {
+        width: 90%;
+        margin: 10px auto;
+    }
+
+    .back-button {
+        width: 80%;
+        max-width: 250px;
+        margin: 15px auto;
+    }
+}
+
+/* Sistema le view nascoste */
+#routineView, #countdownView, #progressView, #weeklyView, #notesView, #dateModifyView {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 10px;
+}        
     </style>
 </head>
 <body>
