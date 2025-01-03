@@ -354,10 +354,31 @@
 }
 
 
-        function showRoutine() {
-            document.getElementById('mainView').style.display = 'none';
-            document.getElementById('routineView').style.display = 'block';
-        }
+       function saveRoutine() {
+    const today = new Date().toISOString().split('T')[0];
+    let dailyScore = 0;
+    let activities = [];
+
+    document.querySelectorAll('.checkbox-container input:checked').forEach(checkbox => {
+        dailyScore += parseFloat(checkbox.value);
+        activities.push(checkbox.id);
+    });
+
+    if (!routineData[today]) {
+        routineData[today] = [];
+    }
+    routineData[today].push({
+        score: dailyScore,
+        activities: activities
+    });
+
+    // Save data to localStorage
+    localStorage.setItem('routineData', JSON.stringify(routineData));
+    alert('Attività salvate con successo!');
+    updateWeeklySummary();
+    updateProgressChart();
+}
+
 
         function showCountdown() {
             document.getElementById('mainView').style.display = 'none';
@@ -430,11 +451,51 @@
         }
 
 function updateProgressChart() {
-    // Funzioni helper per le date
-    const getCurrentItalianDate = () => {
-        const now = new Date();
-        return new Date(now.getTime() + (1 * 60 * 60 * 1000)).toISOString().split('T')[0];
+    const generateLast30Days = () => {
+        let dates = [];
+        for (let i = 29; i >= 0; i--) {
+            const date = new Date();
+            date.setDate(date.getDate() - i);
+            dates.push(date.toISOString().split('T')[0]);
+        }
+        return dates;
     };
+
+    const getScoreAndColor = (date) => {
+        const score = !routineData[date]
+            ? 0
+            : routineData[date].reduce((sum, entry) => sum + entry.score, 0);
+
+        if (score === 0) return { score, color: '#e2e8f0' };
+        if (score < 3) return { score, color: '#60a5fa' };
+        if (score < 6) return { score, color: '#3b82f6' };
+        return { score, color: '#1d4ed8' };
+    };
+
+    const dates = generateLast30Days();
+    const scoreData = dates.map(date => getScoreAndColor(date));
+
+    const traces = [
+        {
+            x: dates,
+            y: scoreData.map(d => d.score),
+            type: 'bar',
+            name: 'Punteggio',
+            marker: { color: scoreData.map(d => d.color) },
+            hovertemplate: `Data: %{x}<br>Punteggio: %{y}<extra></extra>`
+        }
+    ];
+
+    const layout = {
+        title: 'Progresso Giornaliero',
+        xaxis: { title: 'Date', tickangle: -45 },
+        yaxis: { title: 'Punteggio Totale' },
+        margin: { t: 50, b: 80 }
+    };
+
+    Plotly.newPlot('progressChart', traces, layout);
+}
+
 
     const generateLast30Days = () => {
         let dates = [];
@@ -633,7 +694,7 @@ function updateProgressChart() {
         }
 
         // Load saved data on page load
-        window.onload = function() {
+       window.onload = function() {
     const savedRoutine = localStorage.getItem('routineData');
     if (savedRoutine) {
         routineData = JSON.parse(savedRoutine);
@@ -651,6 +712,7 @@ function updateProgressChart() {
 
     showMain();
 };
+
     </script>
 </body>
 </html>
