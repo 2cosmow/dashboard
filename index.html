@@ -6,213 +6,85 @@
     <title>Step by Step</title>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <style>
-        :root {
-            --primary-color: #4361ee;
-            --secondary-color: #3f37c9;
-            --success-color: #4cc9f0;
-            --background-color: #f8f9fa;
-            --card-bg: #ffffff;
-            --text-primary: #2b2d42;
-            --text-secondary: #6c757d;
-            --border-radius: 12px;
-            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-        }
+       :root {
+    --primary-color: #3a0ca3;    /* Viola profondo per il tema principale */
+    --secondary-color: #4895ef;  /* Blu chiaro per accenti */
+    --background-color: #f0f3f9; /* Grigio molto chiaro per lo sfondo */
+    --card-bg: #ffffff;
+    --text-primary: #2b2d42;
+    --text-secondary: #6c757d;
+    --button-primary: #3a0ca3;
+    --button-secondary: #4cc9f0;
+    --button-back: #4895ef;      /* Blu per i pulsanti "torna" */
+    --border-radius: 12px;
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+/* Stile aggiornato per il pulsante "torna" */
+.back-button {
+    background: var(--button-back);
+    color: white;
+    padding: 12px 24px;
+    border-radius: var(--border-radius);
+    border: none;
+    cursor: pointer;
+    font-weight: 500;
+    width: auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 0.9rem;
+    margin-top: 20px;
+    box-shadow: var(--shadow);
+}
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background-color: var(--background-color);
-            color: var(--text-primary);
-            line-height: 1.6;
-            padding: 20px;
-        }
+.back-button:hover {
+    background: #3d84d5;
+    transform: translateY(-2px);
+}
 
-        .header {
-            text-align: center;
-            margin-bottom: 2rem;
-            padding: 1rem;
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-        }
+.back-button::before {
+    content: "←";
+    font-size: 1.2em;
+    margin-right: 4px;
+}
 
-        .header h1 {
-            font-size: 2rem;
-            margin: 0;
-            font-weight: 600;
-        }
+/* Header con nuovo gradiente */
+.header {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
 
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
+/* Card con bordo colorato */
+.card {
+    border-top: 4px solid var(--primary-color);
+    background: var(--card-bg);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
 
-        .card {
-            background: var(--card-bg);
-            padding: 1.5rem;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            transition: transform 0.2s ease;
-        }
+.card:hover {
+    box-shadow: 0 8px 12px -1px rgba(0, 0, 0, 0.15);
+}
 
-        .card:hover {
-            transform: translateY(-2px);
-        }
+/* Bottoni principali aggiornati */
+.button {
+    background: var(--button-primary);
+    color: white;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    padding: 12px 24px;
+    transition: all 0.2s ease;
+}
 
-        .card h2 {
-            color: var(--primary-color);
-            margin-bottom: 1rem;
-            font-size: 1.5rem;
-        }
-
-        .card p {
-            color: var(--text-secondary);
-            margin-bottom: 1.5rem;
-        }
-
-        .button {
-            background: var(--primary-color);
-            color: white;
-            padding: 0.8rem 1.5rem;
-            border-radius: 8px;
-            border: none;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: 500;
-            transition: background-color 0.2s ease;
-            width: auto;
-            min-width: 120px;
-        }
-
-        .button:hover {
-            background: var(--secondary-color);
-        }
-
-        .back-button {
-            background: var(--text-secondary);
-            margin-top: 1rem;
-        }
-
-        .checkbox-container {
-            background: #f8f9fa;
-            padding: 1rem;
-            border-radius: 8px;
-            margin: 1rem 0;
-        }
-
-        .checkbox-container div {
-            margin: 0.8rem 0;
-            display: flex;
-            align-items: center;
-        }
-
-        input[type="checkbox"] {
-            margin-right: 10px;
-            width: 20px;
-            height: 20px;
-        }
-
-        input[type="date"], textarea {
-            width: 100%;
-            padding: 0.8rem;
-            border: 1px solid #dee2e6;
-            border-radius: 8px;
-            margin: 0.5rem 0;
-            font-size: 1rem;
-        }
-
-        #countdown {
-            font-size: 1.8rem;
-            font-weight: 600;
-            color: var(--primary-color);
-            text-align: center;
-            margin: 1.5rem 0;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 1rem 0;
-            background: white;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-
-        th, td {
-            padding: 1rem;
-            text-align: left;
-            border-bottom: 1px solid #dee2e6;
-        }
-
-        th {
-            background: var(--primary-color);
-            color: white;
-            font-weight: 500;
-        }
-
-        #progressChart {
-            height: 400px;
-            margin: 1rem 0;
-        }
-
-        @media (max-width: 768px) {
-            body {
-                padding: 10px;
-            }
-
-            .header h1 {
-                font-size: 1.5rem;
-            }
-
-            .card {
-                padding: 1rem;
-            }
-
-            .grid-container {
-                gap: 1rem;
-            }
-
-            table {
-                font-size: 0.9rem;
-            }
-
-            th, td {
-                padding: 0.8rem;
-            }
-
-            #countdown {
-                font-size: 1.4rem;
-            }
-        }
-
-        .notes-container {
-            max-height: 400px;
-            overflow-y: auto;
-            padding: 0.5rem;
-        }
-
-        .note-card {
-            background: #f8f9fa;
-            padding: 1rem;
-            margin: 0.5rem 0;
-            border-radius: 8px;
-            border-left: 4px solid var(--primary-color);
-        }
-
-        .note-date {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-            margin-bottom: 0.5rem;
-        }
+.button:hover {
+    background: var(--secondary-color);
+    transform: translateY(-2px);
+}
     </style>
 </head>
 <body>
