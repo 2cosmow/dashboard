@@ -85,6 +85,23 @@
     background: var(--secondary-color);
     transform: translateY(-2px);
 }
+ .back-button {
+    background: var(--button-back);
+    color: white;
+    padding: 12px 24px;
+    border-radius: var(--border-radius);
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    width: fit-content;  /* Il bottone si adatta alla larghezza del testo */
+    margin: 20px auto;
+    display: block;      /* Centra il bottone */
+    text-transform: none;  /* Rimuove il maiuscolo automatico */
+}
+
+.back-button:hover {
+    background: #3d84d5;
+}       
     </style>
 </head>
 <body>
@@ -142,7 +159,8 @@
             </label><br>
         </div>
         <button type="button" class="button" onclick="saveRoutine()">Salva</button>
-        <button type="button" class="back-button" onclick="showMain()">Torna alla Dashboard</button>
+        <button type="button" class="back-button">Torna alla Dashboard</button>
+    </div>
     </div>
 </div>
 
@@ -150,7 +168,7 @@
         <div class="card">
             <h2>Countdown all'Esame</h2>
             <div id="countdown" style="font-size: 24px; margin: 20px;"></div>
-            <button class="back-button" onclick="showMain()">Torna alla Dashboard</button>
+            <button class="back-button">Torna alla Dashboard</button>
         </div>
     </div>
 
@@ -158,7 +176,7 @@
         <div class="card">
             <h2>Grafico dei Miglioramenti</h2>
             <div id="progressChart" style="height: 400px;"></div>
-            <button class="back-button" onclick="showMain()">Torna alla Dashboard</button>
+            <button class="back-button">Torna alla Dashboard</button>
         </div>
     </div>
 
@@ -177,7 +195,7 @@
                 </thead>
                 <tbody id="weeklyTableBody"></tbody>
             </table>
-            <button class="back-button" onclick="showMain()">Torna alla Dashboard</button>
+            <button class="back-button">Torna alla Dashboard</button>
         </div>
     </div>
 
@@ -187,7 +205,7 @@
             <textarea id="noteInput" name="noteInput" style="width: 100%; height: 200px; margin: 10px 0; padding: 10px;"></textarea>
             <button class="button" onclick="saveNote()">Aggiungi Nota</button>
             <div id="notesList" style="margin-top: 20px; text-align: left;"></div>
-            <button class="back-button" onclick="showMain()">Torna alla Dashboard</button>
+            <button class="back-button">Torna alla Dashboard</button>
         </div>
     </div>
 
@@ -196,7 +214,7 @@
             <h2>Modifica Data del Countdown</h2>
             <input type="date" id="newExamDate" name="newExamDate" class="date-input">
             <button class="button" onclick="saveNewDate()">Salva</button>
-            <button class="back-button" onclick="showMain()">Torna alla Dashboard</button>
+            <button class="back-button">Torna alla Dashboard</button>
         </div>
     </div>
 
