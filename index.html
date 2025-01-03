@@ -221,41 +221,53 @@
     <h1>Step by Step</h1>
 </div>
 <div id="mainView" class="grid-container">
+    <!-- Main dashboard content -->
+</div>
     <!-- Countdown Section -->
     <div class="card">
         <h2>Countdown</h2>
         <p>Quanto manca</p>
         <button class="button" onclick="showCountdown()">Vai</button>
     </div>
-    
+    <div id="countdownView" style="display: none;">
+    <!-- Countdown view content -->
+</div>
     <!-- Progress Chart Section -->
     <div class="card">
         <h2>Grafico</h2>
         <p>Sali le scale</p>
         <button class="button" onclick="showProgress()">Vai</button>
     </div>
-    
+    <div id="progressView" style="display: none;">
+    <!-- Progress chart content -->
+</div>
     <!-- Daily Routine Section -->
     <div class="card">
         <h2>Daily routine</h2>
         <p>Organizza e monitora</p>
         <button class="button" onclick="showRoutine()">Vai</button>
     </div>
-    
+    <div id="routineView" style="display: none;">
+    <!-- Routine view content -->
+</div>
     <!-- Personal Notes Section -->
     <div class="card">
         <h2>Note Personali</h2>
         <p>nota bene</p>
         <button class="button" onclick="showNotes()">Vai</button>
     </div>
-    
+    <div id="notesView" style="display: none;">
+    <!-- Notes content -->
+</div>
     <!-- Weekly Summary Section -->
     <div class="card">
         <h2>Weekly</h2>
         <p>Visione d'insieme</p>
         <button class="button" onclick="showWeekly()">Vai</button>
     </div>
-    
+    <div id="weeklyView" style="display: none;">
+    <!-- Weekly summary content -->
+</div>
     <!-- Modify Countdown Date Section -->
     <div class="card">
         <h2>Cambia data</h2>
@@ -263,7 +275,9 @@
         <button class="button" onclick="showDateModify()">Vai</button>
     </div>
 </div>
-
+<div id="dateModifyView" style="display: none;">
+    <!-- Modify date content -->
+</div>
 
 <div id="routineView" style="display: none">
     <div class="card">
@@ -349,7 +363,7 @@
         let examDate = new Date('2024-02-15');
         let notes = [];
         function switchView(viewId) {
-    const views = ['mainView', 'routineView', 'countdownView', 'progressView', 'weeklyView', 'notesView', 'dateModifyView'];
+  const views = ['mainView', 'routineView', 'countdownView', 'progressView', 'weeklyView', 'notesView', 'dateModifyView'];
     views.forEach(id => {
         const view = document.getElementById(id);
         if (view) {
