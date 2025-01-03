@@ -268,20 +268,21 @@
 <div id="routineView" style="display: none">
     <div class="card">
         <h2>Routine Giornaliera</h2>
-        <div class="checkbox-container">
-            <label for="task1">
-                <input type="checkbox" id="task1" name="task1" value="2.5"> Lettura Approfondita (2.5)
-            </label><br>
-            <label for="task2">
-                <input type="checkbox" id="task2" name="task2" value="2.0"> Schema Argomenti (2.0)
-            </label><br>
-            <label for="task3">
-                <input type="checkbox" id="task3" name="task3" value="1.5"> Leggere Appunti (1.5)
-            </label><br>
-            <label for="task4">
-                <input type="checkbox" id="task4" name="task4" value="1.0"> Ripasso Veloce (1.0)
-            </label><br>
-        </div>
+       <div class="checkbox-container">
+    <label for="task1">
+        <input type="checkbox" id="task1" name="task1" value="2.5"> Lettura Approfondita (2.5)
+    </label><br>
+    <label for="task2">
+        <input type="checkbox" id="task2" name="task2" value="2.0"> Schema Argomenti (2.0)
+    </label><br>
+    <label for="task3">
+        <input type="checkbox" id="task3" name="task3" value="1.5"> Leggere Appunti (1.5)
+    </label><br>
+    <label for="task4">
+        <input type="checkbox" id="task4" name="task4" value="1.0"> Ripasso Veloce (1.0)
+    </label><br>
+</div>
+
         <button type="button" class="button" onclick="saveRoutine()">Salva</button>
         <button class="back-button" onclick="showMain()">Torna alla Dashboard</button>
     </div>
@@ -350,9 +351,13 @@
         function switchView(viewId) {
     const views = ['mainView', 'routineView', 'countdownView', 'progressView', 'weeklyView', 'notesView', 'dateModifyView'];
     views.forEach(id => {
-        document.getElementById(id).style.display = id === viewId ? 'grid' : 'none';
+        const view = document.getElementById(id);
+        if (view) {
+            view.style.display = id === viewId ? 'grid' : 'none';
+        }
     });
 }
+
 
 
      function showMain() {
@@ -397,10 +402,12 @@
 }
 
 function showMain() {
+    console.log('Returning to main view');
     switchView('mainView');
 }
 
 function showRoutine() {
+    console.log('Opening Routine view');
     switchView('routineView');
 }
 
@@ -427,6 +434,7 @@ function showNotes() {
 function showDateModify() {
     switchView('dateModifyView');
 }
+
 
         // Functionality
         function saveRoutine() {
