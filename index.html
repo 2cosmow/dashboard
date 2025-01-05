@@ -340,24 +340,24 @@
         let examDate = new Date('2024-02-15');
         let notes = [];
         
-       function switchView(viewId) {
-    const views = ['mainView', 'routineView', 'countdownView', 'progressView', 'weeklyView', 'notesView', 'dateModifyView'];
-    views.forEach(id => {
-        const view = document.getElementById(id);
-        if (view) {
-            view.style.display = id === viewId ? (id === 'mainView' ? 'grid' : 'block') : 'none';
-        }
+      function switchView(viewId) {
+    // Nascondi prima tutte le viste
+    document.querySelectorAll('[id$="View"]').forEach(view => {
+        view.style.display = 'none';
     });
-}
+    
+    // Poi mostra solo quella richiesta
+    const viewToShow = document.getElementById(viewId);
+    if (viewToShow) {
+        viewToShow.style.display = viewId === 'mainView' ? 'grid' : 'block';
+    }
 }
 
 function showMain() {
-    console.log('Returning to main view');
     switchView('mainView');
 }
 
 function showRoutine() {
-    console.log('Opening Routine view');
     switchView('routineView');
 }
 
@@ -671,7 +671,7 @@ function updateProgressChart() {
         }
 
         // Load saved data on page load
-       window.onload = function() {
+      window.onload = function() {
     const savedRoutine = localStorage.getItem('routineData');
     if (savedRoutine) {
         routineData = JSON.parse(savedRoutine);
@@ -687,7 +687,7 @@ function updateProgressChart() {
         examDate = new Date(savedDate);
     }
 
-    showMain();
+    showMain();  // Assicurati di mostrare la vista principale all'avvio
 };
 
     </script>
