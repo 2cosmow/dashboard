@@ -245,7 +245,8 @@
     <div class="card">
         <h2>Daily routine</h2>
         <p>Organizza e monitora</p>
-        <button class="button" onclick="showRoutine()">Vai</button>
+       <button type="button" class="button" onclick="saveRoutine()">Salva</button>
+        <button class="back-button" onclick="showMain()">Torna alla Dashboard</button>
     </div>
     <div id="routineView" style="display: none;">
     <!-- Routine view content -->
@@ -294,12 +295,6 @@
     <label for="task4">
         <input type="checkbox" id="task4" name="task4" value="1.0"> Ripasso Veloce (1.0)
     </label><br>
-</div>
-
-        <button type="button" class="button" onclick="saveRoutine()">Salva</button>
-        <button class="back-button" onclick="showMain()">Torna alla Dashboard</button>
-    </div>
-    </div>
 </div>
 
     <div id="countdownView" style="display: none">
